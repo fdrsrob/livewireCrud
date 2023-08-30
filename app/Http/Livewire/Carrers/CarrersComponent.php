@@ -11,14 +11,13 @@ class CarrersComponent extends Component
 {
     public $carreraId;
     public $racer_name;
-    public $code;
     public $description;
     public $carrera, $view_id, $view_carrera_racer_name, $view_carrera_description;
-    public $availableStudents=[];
+    public $availableStudents = [];
     public $studentIds = '';
 
 
-    //modal
+    //modal views *Desactivado*
     public function viewCarrersDetails($carreraId)
     {
         $this->carrera = Carrera::find($carreraId);
@@ -31,7 +30,7 @@ class CarrersComponent extends Component
 
     public function closeViewCarreraModal()
     {
-        $this->view_id='';
+        $this->view_id = '';
         $this->view_carrera_racer_name = '';
         $this->view_carrera_description = '';
     }
@@ -41,14 +40,23 @@ class CarrersComponent extends Component
     {
         $this->carrera = Carrera::find($carreraId);
 
-        $this->racer_name = $this->carrera->racer_name;
-        $this->description = $this->carrera->description;
-
-        //$this->dispatchBrowserEvent('show-edit-students-modal');
+        if ($this->carrera) {
+            $this->racer_name = $this->carrera->racer_name;
+            $this->description = $this->carrera->description;
+        } else {
+            // Manejar el caso en que la carrera no se encontró
+            // Por ejemplo, puedes mostrar un mensaje de error
+            session()->flash('message', 'Error');
+        }
     }
 
     public function editCarreraData()
     {
+        $this->validate([
+            'racer_name' => 'required',
+            'description' => 'required',
+        ]);
+
         $this->carrera->racer_name = $this->racer_name;
         $this->carrera->description = $this->description;
 
@@ -60,7 +68,7 @@ class CarrersComponent extends Component
         $this->dispatchBrowserEvent('close-modal');
     }
 
-    public $carrers;    
+    public $carrers;
     public function mount()
     {
         $this->carrers = DB::table('careers')

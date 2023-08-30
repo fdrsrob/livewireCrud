@@ -29,9 +29,6 @@
                                         <td>{{$carrera->description}}</td>
                                         <td>{{$carrera->count}}</td>
                                         <td style="text-align: center;">
-                                            <button class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#viewCarreraModal" wire:click="viewCarrersDetails({{ $carrera->id }})">
-                                                <i class="bi bi-eye"></i>
-                                            </button>
                                             <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#editCarreraModal" wire:click="editCarrera({{ $carrera->id }})">
                                                 <i class="bi bi-pencil"></i>
                                             </button>
@@ -51,7 +48,7 @@
         </div>
 
         <!-- Modal View -->
-        <div wire:ignore.self class="modal fade" id="viewCarreraModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <!-- <div wire:ignore.self class="modal fade" id="viewCarreraModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog p-3 mb-2 bg-dark text-black">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -82,7 +79,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <!-- Modal Edit -->
         <div wire:ignore.self class="modal fade" id="editCarreraModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
