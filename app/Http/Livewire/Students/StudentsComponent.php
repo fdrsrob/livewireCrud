@@ -52,6 +52,14 @@ class StudentsComponent extends Component
         'phone.required' => 'El número de teléfono es obligatorio.',
         'phone.numeric' => 'El número de teléfono debe ser numérico.',
         'phone.digits' => 'El número de teléfono debe tener :digits dígitos.',
+        'attributes' => [
+            'phone' => 'teléfono',
+        ],
+        'custom' => [
+            'phone' => [
+                'digits' => 'El :attribute debe tener 10 dígitos.',
+            ],
+        ]
     ];
 
     //Guardar
@@ -62,7 +70,7 @@ class StudentsComponent extends Component
             'student_id' => 'required|digits:3|unique:students', // students = table name
             'name' => 'required',
             'email' => 'required|email',
-            'phone' => ['required', 'numeric', 'digits:10'],
+            'phone' => 'required|numeric|digits:10',
         ]);
 
         //Agregar informacion estudiante
@@ -109,13 +117,13 @@ class StudentsComponent extends Component
 
     public function editStudentData()
     {
-        //on form submit validation
-        //$this->validate([
-        //    'student_id' => 'required|unique',
-        //    'name' => 'required',
-        //    'email' => 'required|email',
-        //    'phone' => 'required|numeric',
-        //]);
+        // Validación específica para la edición
+        $this->validate([
+            'student_id' => 'required|numeric|digits:3|unique:students,student_id,' . $this->student->id,
+            'name' => 'required',
+            'email' => 'required|email',
+            'phone' => 'required|numeric|digits:10', // Se requieren 10 dígitos
+        ]);
 
         $this->student->student_id = $this->student_id;
         $this->student->name = $this->name;
@@ -126,7 +134,7 @@ class StudentsComponent extends Component
 
         session()->flash('message', 'Actualizado correctamente');
 
-        //ocultar model despues de crearlo correctamente
+        //ocultar modal después de actualizar correctamente
         $this->dispatchBrowserEvent('close-modal');
     }
 
