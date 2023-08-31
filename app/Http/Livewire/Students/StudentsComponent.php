@@ -24,7 +24,7 @@ class StudentsComponent extends Component
     public $view_student_email;
     public $view_student_phone;
     public $view_student_carrera;
-    public $searchPhone = '', $searchEmail = '', $searchName = '', $searchCarrera = '';
+    public $searchQuery = '';
 
     //Validacion update
     public function updated($fields)
@@ -202,24 +202,17 @@ class StudentsComponent extends Component
 
     //Buscar
     public function search()
-    {
+    {        
         $query = Students::query();
 
-        if (!empty($this->searchName)) {
-            $query->where('name', 'LIKE', '%' . $this->searchName . '%');
-        }
-
-        if (!empty($this->searchEmail)) {
-            $query->orWhere('email', 'LIKE', '%' . $this->searchEmail . '%');
-        }
-
-        if (!empty($this->searchPhone)) {
-            $query->orWhere('phone', 'LIKE', '%' . $this->searchPhone . '%');
-        }
-
-        if (!empty($this->searchCarrera)) {
-            $query->orWhereHas('carrera', function ($q) {
-                $q->where('racer_name', 'LIKE', '%' . $this->searchCarrera . '%');
+        if (!empty($this->searchQuery)) {
+            $query->where(function ($q) {
+                $q->where('name', 'LIKE', '%' . $this->searchQuery . '%')
+                    ->orWhere('email', 'LIKE', '%' . $this->searchQuery . '%')
+                    ->orWhere('phone', 'LIKE', '%' . $this->searchQuery . '%')
+                    ->orWhereHas('carrera', function ($cq) {
+                        $cq->where('racer_name', 'LIKE', '%' . $this->searchQuery . '%');
+                    });
             });
         }
 
